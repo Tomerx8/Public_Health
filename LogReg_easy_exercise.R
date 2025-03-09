@@ -6,6 +6,9 @@
 ## Step 1: Generate sample data
 ###############################
 
+library(ggplot2)
+library(tidyverse)
+
 # For reproducibility
 set.seed(123)
 
@@ -17,9 +20,12 @@ df <- data.frame(
 )
 
 # Simulate heart attack occurrence (dependent on age, BMI, smoker)
-df$heart_attack <- with(df, ifelse(
-  0.02 * age + 0.05 * BMI + 0.6 * smoker + rnorm(100) > 3, 1, 0
-))
+
+df$risk_score <- with(df, 
+                      0.02 * age + 0.05 * BMI + 0.6 * smoker + rnorm(100))
+
+  df$heart_attack <- with(df, ifelse(df$risk_score > 3, 1, 0))
+
 
 head(df)
 
@@ -28,7 +34,7 @@ head(df)
 ############################################
 
 # Install if needed:
-# install.packages("caTools")
+install.packages("caTools")
 library(caTools)
 
 set.seed(42)
